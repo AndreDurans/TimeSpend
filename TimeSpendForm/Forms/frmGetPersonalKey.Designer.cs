@@ -73,7 +73,7 @@
             this.Name = "frmGetPersonalKey";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmGetPersonalKey";
+            this.Text = "Token!";
             this.ResumeLayout(false);
             this.PerformLayout();
 

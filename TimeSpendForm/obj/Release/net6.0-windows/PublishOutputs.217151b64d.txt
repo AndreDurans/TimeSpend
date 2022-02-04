@@ -1,0 +1,10 @@
+C:\temp\TimeSpendForm.exe
+C:\temp\TimeSpendForm.dll
+C:\temp\TimeSpendForm.deps.json
+C:\temp\TimeSpendForm.runtimeconfig.json
+C:\temp\TimeSpendForm.pdb
+C:\temp\Microsoft.Build.Framework.dll
+C:\temp\Microsoft.Build.Tasks.Core.dll
+C:\temp\Microsoft.Build.Utilities.Core.dll
+C:\temp\Microsoft.NET.StringTools.dll
+C:\temp\Newtonsoft.Json.dll
