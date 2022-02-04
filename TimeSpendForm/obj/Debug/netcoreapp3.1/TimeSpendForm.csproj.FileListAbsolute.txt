@@ -1,0 +1,8 @@
+C:\Projetos\TimeSpend\TimeSpendForm\obj\Debug\netcoreapp3.1\TimeSpendForm.csproj.AssemblyReference.cache
+C:\Projetos\TimeSpend\TimeSpendForm\obj\Debug\netcoreapp3.1\TimeSpendForm.Forms.frmGetPersonalKey.resources
+C:\Projetos\TimeSpend\TimeSpendForm\obj\Debug\netcoreapp3.1\TimeSpendForm.Forms.frmMain.resources
+C:\Projetos\TimeSpend\TimeSpendForm\obj\Debug\netcoreapp3.1\TimeSpendForm.csproj.GenerateResource.cache
+C:\Projetos\TimeSpend\TimeSpendForm\obj\Debug\netcoreapp3.1\TimeSpendForm.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projetos\TimeSpend\TimeSpendForm\obj\Debug\netcoreapp3.1\TimeSpendForm.AssemblyInfoInputs.cache
+C:\Projetos\TimeSpend\TimeSpendForm\obj\Debug\netcoreapp3.1\TimeSpendForm.AssemblyInfo.cs
+C:\Projetos\TimeSpend\TimeSpendForm\obj\Debug\netcoreapp3.1\TimeSpendForm.csproj.CoreCompileInputs.cache

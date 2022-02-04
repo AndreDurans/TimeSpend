@@ -57,8 +57,7 @@ namespace TimeSpendForm.Forms
             List<Issue> result = new List<Issue>();
             this._IssueList = new List<Issue>();
             this._client = new HttpClient();
-
-            var path = String.Format("https://gitlab.com/api/v4//projects/{0}/issues?per_page=100&state=opened", projectId);
+            var path = String.Format("https://gitlab.com/api/v4/projects/{0}/issues?per_page=100&state=opened", projectId);
             _client.BaseAddress = new Uri(path);
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
@@ -116,7 +115,7 @@ namespace TimeSpendForm.Forms
                 return;
             }
 
-            if(hour == 0 && minute == 0)
+            if (hour == 0 && minute == 0)
             {
                 MessageBox.Show("Informe a quantidade de horas/minuto!");
                 return;
@@ -142,23 +141,22 @@ namespace TimeSpendForm.Forms
                 issue_iid = issueId
             };
 
-            var httpRequest = (HttpWebRequest)WebRequest.Create(String.Format("https://gitlab.com/api/v4/projects/{0}/issues/{1}/notes", projectId, issueId));
-            httpRequest.Method = "POST";
-            httpRequest.Accept = "application/json";
-            httpRequest.Headers["PRIVATE-TOKEN"] = _personalKey;
-            httpRequest.ContentType = "application/json";
-
-            using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+            using (var _client = new HttpClient())
             {
-                streamWriter.Write(JsonConvert.SerializeObject(noteObject));
-            }
+                _client.BaseAddress = new Uri($"https://gitlab.com/");
+                _client.DefaultRequestHeaders.Accept.Clear();
+                _client.DefaultRequestHeaders.Add("PRIVATE-TOKEN", _personalKey);
 
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-            }
+                StringContent content = new StringContent(JsonConvert.SerializeObject(noteObject), Encoding.UTF8, "application/json");
 
+                var result = _client.PostAsync($"api/v4/projects/{projectId}/issues/{issueId}/notes", content);
+                /*string resultContent = result.Content.ReadAsStringAsync()*/
+
+                if (result.Result.StatusCode == HttpStatusCode.Created)
+                    MessageBox.Show("LogWork realizado com sucesso!");
+                else
+                    MessageBox.Show("LogWork não realizado!");
+            }
         }
 
         private void loadDescription()
@@ -187,8 +185,9 @@ namespace TimeSpendForm.Forms
         {
             if (ddProject.SelectedIndex != 0)
             {
-                var myEnum = (int)Enum.Parse(typeof(ProjectsEnum), ddProject.SelectedValue.ToString());
-                GetIssues(myEnum);
+                var projectId = Convert.ToInt32(ddProject.SelectedValue);
+                //var myEnum = (int)Enum.Parse(typeof(ProjectsEnum), ddProject.SelectedValue.ToString());
+                GetIssues(projectId);
             }
             else
             {
