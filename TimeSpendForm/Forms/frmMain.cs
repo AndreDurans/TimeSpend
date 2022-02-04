@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -33,7 +34,8 @@ namespace TimeSpendForm.Forms
             this._client = new HttpClient();
             this._IssueList = new List<Issue>();
             this._description = new Dictionary<string, int>();
-            this._personalKey = File.ReadAllText(@"C:\temp\Personalkey.txt");
+            var folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            this._personalKey = File.ReadAllText(@$"{folder}\Personalkey.txt");
             InitializeComponent();
         }
 

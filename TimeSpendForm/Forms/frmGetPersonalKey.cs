@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,12 +27,12 @@ namespace TimeSpendForm.Forms
             if (!String.IsNullOrEmpty(key))
             {
 
-                if (!Directory.Exists(@"C:\temp"))
-                    Directory.CreateDirectory(@"C:\temp");
+                //if (!Directory.Exists(@"C:\temp"))
+                //    Directory.CreateDirectory(@"C:\temp");
 
                 //File.Create(@"C:\temp\Personalkey.txt").Dispose();
-
-                File.WriteAllLines(@"C:\temp\Personalkey.txt", list);
+                var folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                File.WriteAllLines(@$"{folder}\Personalkey.txt", list);
 
                 Form frm = new frmMain(this);
                 frm.Show();
