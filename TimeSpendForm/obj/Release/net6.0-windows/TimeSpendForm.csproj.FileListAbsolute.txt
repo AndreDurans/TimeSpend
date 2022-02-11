@@ -21,3 +21,4 @@ C:\Projetos\TimeSpend\TimeSpendForm\obj\Release\net6.0-windows\TimeSpendForm.dll
 C:\Projetos\TimeSpend\TimeSpendForm\obj\Release\net6.0-windows\ref\TimeSpendForm.dll
 C:\Projetos\TimeSpend\TimeSpendForm\obj\Release\net6.0-windows\TimeSpendForm.pdb
 C:\Projetos\TimeSpend\TimeSpendForm\obj\Release\net6.0-windows\TimeSpendForm.genruntimeconfig.cache
+C:\Projetos\TimeSpend\TimeSpendForm\obj\Release\net6.0-windows\TimeSpendForm.csproj.AssemblyReference.cache

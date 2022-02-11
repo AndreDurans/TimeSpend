@@ -1,0 +1,10 @@
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\TimeSpendForm.exe
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\TimeSpendForm.dll
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\TimeSpendForm.deps.json
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\TimeSpendForm.runtimeconfig.json
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\TimeSpendForm.pdb
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\Microsoft.Build.Framework.dll
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\Microsoft.Build.Tasks.Core.dll
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\Microsoft.Build.Utilities.Core.dll
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\Microsoft.NET.StringTools.dll
+C:\Projetos\TimeSpend\TimeSpendForm\bin\publish\Newtonsoft.Json.dll
