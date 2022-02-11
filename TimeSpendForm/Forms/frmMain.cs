@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeSpendForm.Core;
 using TimeSpendForm.Models;
+using TimeSpendForm.Services;
 
 namespace TimeSpendForm.Forms
 {
@@ -26,6 +27,8 @@ namespace TimeSpendForm.Forms
         private string _personalKey;
         private List<Issue> _IssueList;
         Dictionary<string, int> _description;
+        private ILogWorkService _logWorkService;
+
 
         public frmMain(Form frmPersonalKey)
         {
@@ -34,6 +37,8 @@ namespace TimeSpendForm.Forms
             this._IssueList = new List<Issue>();
             this._description = new Dictionary<string, int>();
             this._personalKey = File.ReadAllText(@"C:\temp\Personalkey.txt").Trim();
+            this._logWorkService = new LogWorkService(new());
+
             InitializeComponent();
         }
 
@@ -82,7 +87,7 @@ namespace TimeSpendForm.Forms
             ddCard.ValueMember = "iid";
         }
 
-        private void btnEnviar_Click(object sender, EventArgs e)
+        private string ValidateForm()
         {
             var projectId = Convert.ToInt32(ddProject.SelectedValue);
             var issueId = Convert.ToInt32(ddCard.SelectedValue);
@@ -92,34 +97,62 @@ namespace TimeSpendForm.Forms
             var minute = qtdMinuto.Value;
 
             if (projectId == 0)
-            {
-                MessageBox.Show("Selecione um projeto!");
-                return;
-            }
+                return "Selecione um projeto!";
 
             if (issueId == 0)
-            {
-                MessageBox.Show("Selecione um card!");
-                return;
-            }
+                return "Selecione um card!";
 
             if (noteId == 0)
-            {
-                MessageBox.Show("Selecione um apontamento!");
-                return;
-            }
+                return "Selecione um apontamento!";
 
             if ((noteId == 10 || noteId == 11 || noteId == 13) && string.IsNullOrEmpty(noteDescription.Trim()))
-            {
-                MessageBox.Show("Informe uma descrição!");
-                return;
-            }
+                return "Informe uma descrição!";
 
             if (hour == 0 && minute == 0)
+                return "Informe a quantidade de horas/minuto!";
+
+            return string.Empty;
+        }
+
+        private async void btnEnviar_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ValidateForm()))
             {
-                MessageBox.Show("Informe a quantidade de horas/minuto!");
+                MessageBox.Show(ValidateForm());
                 return;
             }
+            var uri = $"https://gitlab.com/api/v4/projects/{Convert.ToInt32(ddProject.SelectedValue)}/issues/{Convert.ToInt32(ddCard.SelectedValue)}/notes";
+            LogWork logWork = new()
+            {
+                Url = uri,
+                Note = new()
+                {
+                    body = string.IsNullOrEmpty(tbDescricao.Text.Trim())
+                                    ? $"/spend {SetTime()} \n {ddDescription.Text}"
+                                    : $"/spend {SetTime()} \n {ddDescription.Text} {tbDescricao.Text.Trim()}",
+                    issue_iid = Convert.ToInt32(ddCard.SelectedValue)
+                },
+                PersonalToken = _personalKey
+            };
+
+            if (await _logWorkService.NewLogWork(logWork))
+            {
+                MessageBox.Show("LogWork realizado com sucesso!");
+                qtdHora.Value = 0;
+                qtdMinuto.Value = 0;
+                ddProject.SelectedIndex = 0;
+                ddDescription.SelectedIndex = 0;
+                tbDescricao.Text = "";
+            }
+            else
+                MessageBox.Show("LogWork não realizado!");
+        }
+
+
+        private string SetTime()
+        {
+            var hour = Convert.ToInt32(qtdHora.Value);
+            var minute = Convert.ToInt32(qtdMinuto.Value);
 
             var setTime = "";
             if (hour > 0 && minute > 0)
@@ -129,34 +162,7 @@ namespace TimeSpendForm.Forms
             else if (minute > 0 && hour == 0)
                 setTime = string.Format("{0}m", minute);
 
-            var bodyDescription = "";
-            if (string.IsNullOrEmpty(noteDescription.Trim()))
-                bodyDescription = string.Format("/spend {0} \n {1}", setTime, ddDescription.Text);
-            else
-                bodyDescription = string.Format("/spend {0} \n {1} {2}", setTime, ddDescription.Text, noteDescription);
-
-            Note noteObject = new Note()
-            {
-                body = bodyDescription,
-                issue_iid = issueId
-            };
-
-            using (var _client = new HttpClient())
-            {
-                _client.BaseAddress = new Uri($"https://gitlab.com/");
-                _client.DefaultRequestHeaders.Accept.Clear();
-                _client.DefaultRequestHeaders.Add("PRIVATE-TOKEN", _personalKey);
-
-                StringContent content = new StringContent(JsonConvert.SerializeObject(noteObject), Encoding.UTF8, "application/json");
-
-                var result = _client.PostAsync($"api/v4/projects/{projectId}/issues/{issueId}/notes", content);
-                /*string resultContent = result.Content.ReadAsStringAsync()*/
-
-                if (result.Result.StatusCode == HttpStatusCode.Created)
-                    MessageBox.Show("LogWork realizado com sucesso!");
-                else
-                    MessageBox.Show("LogWork não realizado!");
-            }
+            return setTime;
         }
 
         private void loadDescription()
